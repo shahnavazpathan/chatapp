@@ -12,15 +12,16 @@ app.use(cookieParser());
 
 import authRoutes from "./routes/auth.routes.js";
 
-
-import mailRoute from "./routes/mail.route.js";
 import mongoose from "./dbCredentials/mongo.connection.js";
-import connectToDB from "./dbCredentials/mongo.connection.js";
+import reqRoute from "./routes/friendReq.route.js";
+import protectedRoute from "./middleware/protectedRoute.js";
 
 app.use("/api/auth/", authRoutes);
-app.use("/api/",mailRoute);
+
+app.use("/api/",protectedRoute,reqRoute);
+
 
 app.listen(1234, (req, res) => {
-  connectToDB();
+  
   console.log("server is running at port 1234");
-});
+}); 

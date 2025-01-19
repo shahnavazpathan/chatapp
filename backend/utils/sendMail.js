@@ -4,7 +4,7 @@ import otpDoc from "../models/otps.model.js";
 
 const sendMail = async (host, receiverEmail, userId) => {
   try {
-    var protocol;
+    
     if (!host.includes("localhost")) {
       protocol = "https";
     } else {
@@ -33,7 +33,7 @@ const sendMail = async (host, receiverEmail, userId) => {
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: receiverEmail,
-      subject: "Verify Your Email - FinanceTracker",
+      subject: "Verify Your Email - Apex",
       text: `Please verify your email by clicking the following link: ${verificationLink}`,
       html: `
       <!DOCTYPE html>
@@ -102,21 +102,21 @@ const sendMail = async (host, receiverEmail, userId) => {
       <body>
           <div class="container">
               <div class="header">
-                  Welcome to FinanceTracker!
+                  Welcome to Apex!
               </div>
               <div class="content">
                   <p>Hi there,</p>
-                  <p>Thank you for signing up with <strong>FinanceTracker</strong>! We're excited to have you on board.</p>
+                  <p>Thank you for signing up with <strong>Apex</strong>! We're excited to have you on board.</p>
                   <p>To get started and verify your email, please click the link below:</p>
                   <a href="${verificationLink}" class="button">Verify Email</a>
                   <p>If the button doesn't work, copy and paste the following link into your browser:</p>
                   <p>${verificationLink}</p>
-                  <p>If you did not sign up for FinanceTracker, you can safely ignore this email.</p>
+                  <p>If you did not sign up for Apex, you can safely ignore this email.</p>
                   <p>Thanks,</p>
-                  <p>The FinanceTracker Team</p>
+                  <p>The Apex Team</p>
               </div>
               <div class="footer">
-                  <p>&copy; 2024 FinanceTracker. All rights reserved.</p>
+                  <p>&copy; 2024 Apex. All rights reserved.</p>
               </div>
           </div>
       </body>
