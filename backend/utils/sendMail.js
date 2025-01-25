@@ -4,7 +4,7 @@ import otpDoc from "../models/otps.model.js";
 
 const sendMail = async (host, receiverEmail, userId) => {
   try {
-    
+    let protocol;
     if (!host.includes("localhost")) {
       protocol = "https";
     } else {

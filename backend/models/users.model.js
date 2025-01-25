@@ -29,6 +29,13 @@ const userSchema = new mongoose.Schema(
       type: [Schema.Types.ObjectId],
       ref: "users",
     },
+    conversations : {
+      type : [Schema.Types.ObjectId],
+      ref : "conversations",
+    },
+    lastOnline : {
+      type : Date,
+    }
   },
   { timestamps: true }
 );

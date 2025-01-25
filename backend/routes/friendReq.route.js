@@ -1,14 +1,14 @@
 import express from "express";
 import sendReq from "../controllers/friend-requests-controllers/sendReq.controller.js";
 import getReq from "../controllers/friend-requests-controllers/getReq.controller.js";
-import acceptReq from "../controllers/friend-requests-controllers/acceptReq.controller.js";
-import rejectReq from "../controllers/friend-requests-controllers/rejectReq.controller.js";
+import removeFriend from "../controllers/friend-requests-controllers/rmvFrd.controller.js";
+import resToReq from "../controllers/friend-requests-controllers/resToReq.controller.js";
 
 const route = express.Router();
 
 route.post('/sendreq',sendReq);
 route.post('/getreq',getReq);
-route.post('/acceptreq',acceptReq);
-route.post('/rejectreq',rejectReq);
+route.post('/restoreq',resToReq);
+route.post('/removefriend',removeFriend);
 
 export default route;

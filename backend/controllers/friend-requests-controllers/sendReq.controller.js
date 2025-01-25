@@ -14,12 +14,12 @@ const sendReq = async (req, res) => {
     if (!existingUser) {
       return res.status(400).json({ message: "User not found!" });
     }
-    if (await User.findOne({ friendReqs: [req.userId],username })) {
+    if (await User.findOne({ friendReqs: req.userId,username })) {
       return res
         .status(400)
         .json({ message: "The friend request already present!" });
     }
-    await User.updateOne({ username }, { $push: { friendReqs: [req.userId] } });
+    await User.updateOne({ username }, { $push: { friendReqs: req.userId } });
     return res
       .status(200)
       .json({ message: "Friend request sent successfully!" });
