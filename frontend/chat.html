@@ -15,11 +15,12 @@
     <input type="text" name="" id="" class="recipientId" /> <br />
     <input type="text" name="" id="" class="msg" /> <br />
     <input type="button" value="send" onclick="send()" />
-
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script>
-        const socket = io("http://localhost:1234/", {
+      const token = Cookies.get('jwt');
+        const socket = io("http://localhost:1234/api/chat", {
           auth: {
-            token: localStorage.getItem('jwt') // Replace with actual token
+            query : {token : 'jwt'}
           }
         });
       
@@ -28,12 +29,12 @@
           const msgInput = document.querySelector(".msg");
           const msg = msgInput.value.trim();
       
-          if (!recipientId || !msg) return;
+          // if (!recipientId || !msg) return;
       
           socket.emit('msg', { recipientId, msg });
           msgInput.value = ''; // Clear input
         }
-        
+
       
         socket.on('newMsg', (data) => {
           console.log("New message:", data);

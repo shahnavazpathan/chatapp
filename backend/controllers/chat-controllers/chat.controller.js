@@ -1,14 +1,21 @@
+
 import { io } from "../../utils/socketIo.js";
 import Conversation from "../../models/conversation.model.js";
 import User from "../../models/users.model.js";
 
-const chatNamespace = io.of('/api/chat');
+
+
+
 const chatContoller = () => {
-  chatNamespace.on("connection", (socket) => {
+  io.of('/api/chat').on("connection", (socket) => {
     console.log("A user connected", socket.id);
+    const userId = socket.handshake.query.userId;
     
-    socket.on("msg", async (data) => {
-      data.userId = req.userId;
+    socket.on('msg', async (data) => {
+      console.log(data);
+      data.userId = socket.handshake.auth.token;
+      console.log(data.userId);
+      
       if (!Array.isArray(data.recipientId)) {
         console.log("It is not an array");
         
