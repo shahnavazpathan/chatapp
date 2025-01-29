@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script
+    <script 
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"
       integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q=="
       crossorigin="anonymous"
@@ -33,6 +33,7 @@
           socket.emit('msg', { recipientId, msg });
           msgInput.value = ''; // Clear input
         }
+        
       
         socket.on('newMsg', (data) => {
           console.log("New message:", data);
