@@ -16,9 +16,10 @@ const protectedRoute = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized User" });
     }
 
-   
-
-    const existingUser = await User.findOne({_id : decoded.userId});
+    const existingUser = await User.findOne({
+      _id: decoded.userId,
+      isVerified: true,
+    });
     req.userId = decoded.userId;
 
     if (!existingUser) {

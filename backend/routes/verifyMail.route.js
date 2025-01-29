@@ -6,16 +6,17 @@ const route = express.Router();
 
 route.post("/verify", async (req, res) => {
   try {
-    const { otp } = req.query;
+    const { otp } = req.body;
 
     if (!otp) {
-      return res.status(401).json({ message: "No otp found in the link" });
+      return res.status(401).json({ message: "otp not provided!" });
     }
     const dbOtp = await otpDoc.findOne({userId :req.userId,otp});
 
     if (!dbOtp || dbOtp.otp != otp) {
       return res.status(401).json({ message: "Unauthorized User" });
     }
+    
 
     await User.updateOne(
       { _id: decoded.userId },

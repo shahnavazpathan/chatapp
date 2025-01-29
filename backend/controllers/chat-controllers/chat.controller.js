@@ -1,13 +1,14 @@
-import { io, onlineUsers } from "../../utils/socketIo.js";
+import { io } from "../../utils/socketIo.js";
 import Conversation from "../../models/conversation.model.js";
 import User from "../../models/users.model.js";
 
-
-const chatContoller = (req, res) => {
-  io.on("connection", (socket) => {
+const chatNamespace = io.of('/api/chat');
+const chatContoller = () => {
+  chatNamespace.on("connection", (socket) => {
     console.log("A user connected", socket.id);
-
+    
     socket.on("msg", async (data) => {
+      data.userId = req.userId;
       if (!Array.isArray(data.recipientId)) {
         console.log("It is not an array");
         
@@ -21,7 +22,7 @@ const chatContoller = (req, res) => {
             { _id: isExist._id },
             {
               $push: { messages: { senderId: data.userId, message: data.msg } },
-            }
+            } 
           );
         } else {
           console.log("No, it does not exist");
@@ -68,6 +69,6 @@ const chatContoller = (req, res) => {
       socket.on("disconnect", () => {});
     });
   });
-};
+}
 
 export default chatContoller;

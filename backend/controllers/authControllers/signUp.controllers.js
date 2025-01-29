@@ -53,20 +53,14 @@ const signUp = async (req, res) => {
         .json({ message: "Please enter valid email address!" });
     }
 
-    // const [existCheck] = await databaseConnection.query(
-    //   `select userName from users where userName = ?`,
-    //   [username]
-    // );
+  
     const existingUser = await User.findOne({username});
     if (existingUser) {
       return res.status(400).json({ message: "username already exists!" });
 
     }
     
-    // if (existCheck.length > 0) {
-    //   return res.status(400).json({ message: "user already exists!" });
-    // }
-
+  
     let hashedPassword = await bcrypt.hash(password, 7);
     let hashedEmail = await bcrypt.hash(email,process.env.EMAIL_SALT);
 
@@ -79,18 +73,18 @@ const signUp = async (req, res) => {
     const newUser = new User({
       username,
       password : hashedPassword,
-      email : hashedEmail
+      email : hashedEmail,
       
     });
       await newUser.save();
 
-      const userId = await newUser._id;
+      const userId = newUser._id;
 
     if (userId == undefined) {
       return res.status(500).json({ message: "internal server error" });
     }
 
-    await generateTokenAndSetCookie(userId, res);
+    generateTokenAndSetCookie(userId, res);
 
     const isSent = await sendMail(req.get("host"), email, userId);
 

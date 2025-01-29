@@ -11,7 +11,4 @@ const io = new Server(server, {
       }
 });
 
-let onlineUsers = {};
-
-
-export {app,server,io,onlineUsers};
+export {app,server,io};

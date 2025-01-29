@@ -4,22 +4,16 @@ import otpDoc from "../models/otps.model.js";
 
 const sendMail = async (host, receiverEmail, userId) => {
   try {
-    let protocol;
-    if (!host.includes("localhost")) {
-      protocol = "https";
-    } else {
-      protocol = "http";
-    }
+    
     const otp = Math.floor(100000 + Math.random() * 900000);
 
    
-    const newOtp = new otpDoc({
+    const newOtp = await otpDoc.create({
       userId,
       otp
     });
-    await newOtp.save();
-
-    let verificationLink = `${protocol}://${host}/api/auth/verify?otp=${otp}`;
+   
+    
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -34,93 +28,81 @@ const sendMail = async (host, receiverEmail, userId) => {
       from: process.env.EMAIL_ADDRESS,
       to: receiverEmail,
       subject: "Verify Your Email - Apex",
-      text: `Please verify your email by clicking the following link: ${verificationLink}`,
+      text: `Please verify your email`,
       html: `
       <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Verify Your Email - FinanceTracker</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  background-color: #f4f4f4;
-                  margin: 0;
-                  padding: 0;
-                  color: #333;
-              }
-              .container {
-                  width: 100%;
-                  max-width: 600px;
-                  margin: 0 auto;
-                  padding: 20px;
-                  background-color: #ffffff;
-                  border-radius: 8px;
-                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              }
-              .header {
-                  background-color: #4CAF50;
-                  padding: 20px;
-                  text-align: center;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
-                  color: #ffffff;
-                  font-size: 24px;
-              }
-              .content {
-                  padding: 20px;
-                  text-align: left;
-                  line-height: 1.6;
-                  color: #333;
-              }
-              .content p {
-                  margin: 0;
-                  margin-bottom: 10px;
-              }
-              .button {
-                  display: inline-block;
-                  background-color: #4CAF50;
-                  color: white;
-                  text-decoration: none;
-                  padding: 12px 24px;
-                  border-radius: 5px;
-                  font-size: 16px;
-                  font-weight: bold;
-                  margin-top: 20px;
-              }
-              .footer {
-                  text-align: center;
-                  padding: 10px;
-                  font-size: 12px;
-                  color: #888;
-                  margin-top: 20px;
-                  border-top: 1px solid #eeeeee;
-              }
-          </style>
-      </head>
-      <body>
-          <div class="container">
-              <div class="header">
-                  Welcome to Apex!
-              </div>
-              <div class="content">
-                  <p>Hi there,</p>
-                  <p>Thank you for signing up with <strong>Apex</strong>! We're excited to have you on board.</p>
-                  <p>To get started and verify your email, please click the link below:</p>
-                  <a href="${verificationLink}" class="button">Verify Email</a>
-                  <p>If the button doesn't work, copy and paste the following link into your browser:</p>
-                  <p>${verificationLink}</p>
-                  <p>If you did not sign up for Apex, you can safely ignore this email.</p>
-                  <p>Thanks,</p>
-                  <p>The Apex Team</p>
-              </div>
-              <div class="footer">
-                  <p>&copy; 2024 Apex. All rights reserved.</p>
-              </div>
-          </div>
-      </body>
-      </html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #4caf50;
+      }
+      .otp {
+        display: inline-block;
+        background: #f1f1f1;
+        padding: 10px 15px;
+        border-radius: 4px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        letter-spacing: 2px;
+        margin: 20px 0;
+      }
+      .content {
+        text-align: center;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h1>Welcome to Apex!</h1>
+      </div>
+      <div class="content">
+        <p>Hi there,</p>
+        <p>Your OTP for verifying your account is:</p>
+        <div class="otp">${otp}</div>
+        <p>This OTP is valid for 10 minutes. Please do not share it with anyone.</p>
+        <p>If you did not request this, you can safely ignore this email.</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2025 Apex. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
+
     `,
     };
 

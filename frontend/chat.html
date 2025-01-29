@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"
+      integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <input type="text" name="" id="" class="recipientId" /> <br />
+    <input type="text" name="" id="" class="msg" /> <br />
+    <input type="button" value="send" onclick="send()" />
+
+    <script>
+        const socket = io("http://localhost:1234/", {
+          auth: {
+            token: localStorage.getItem('jwt') // Replace with actual token
+          }
+        });
+      
+        function send() {
+          const recipientId = document.querySelector(".recipientId").value;
+          const msgInput = document.querySelector(".msg");
+          const msg = msgInput.value.trim();
+      
+          if (!recipientId || !msg) return;
+      
+          socket.emit('msg', { recipientId, msg });
+          msgInput.value = ''; // Clear input
+        }
+      
+        socket.on('newMsg', (data) => {
+          console.log("New message:", data);
+          // Add logic to display message in UI
+        });
+      
+        socket.on('error', (error) => {
+          console.error("Socket error:", error);
+        });
+      </script>
+  </body>
+</html>

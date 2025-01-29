@@ -21,11 +21,13 @@ import mongoose from "./dbCredentials/mongo.connection.js";
 import reqRoute from "./routes/friendReq.route.js";
 import protectedRoute from "./middleware/protectedRoute.js";
 import chatRoutes from "./routes/chat.route.js";
+import forgetPasswordRoutes from "./routes/forgetPassword.route.js";
 
 app.use("/api/auth/", authRoutes);
 
-// app.use("/api/",protectedRoute,reqRoute);
+app.use("/api/",protectedRoute,reqRoute);
 app.use("/api/",chatRoutes);
+app.use("/api/forget-password",forgetPasswordRoutes);
 
 
 server.listen(1234, (req, res) => {
